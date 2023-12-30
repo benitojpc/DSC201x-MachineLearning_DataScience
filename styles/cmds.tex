@@ -1,0 +1,261 @@
+\def\exampletext{Example} % If English
+
+\NewDocumentEnvironment{testexample}{ O{} }
+{
+\colorlet{colexam}{red!55!black} % Global example color
+\newtcolorbox[use counter=testexample]{testexamplebox}{%
+    % Example Frame Start
+    empty,% Empty previously set parameters
+    title={\exampletext: #1},% use \thetcbcounter to access the testexample counter text
+    % Attaching a box requires an overlay
+    attach boxed title to top left,
+       % Ensures proper line breaking in longer titles
+       minipage boxed title,
+    % (boxed title style requires an overlay)
+    boxed title style={empty,size=minimal,toprule=0pt,top=4pt,left=3mm,overlay={}},
+    coltitle=colexam,fonttitle=\bfseries,
+    before=\par\medskip\noindent,parbox=false,boxsep=0pt,left=3mm,right=0mm,top=2pt,breakable,pad at break=0mm,
+       before upper=\csname @totalleftmargin\endcsname0pt, % Use instead of parbox=true. This ensures parskip is inherited by box.
+    % Handles box when it exists on one page only
+    overlay unbroken={\draw[colexam,line width=.5pt] ([xshift=-0pt]title.north west) -- ([xshift=-0pt]frame.south west); },
+    % Handles multipage box: first page
+    overlay first={\draw[colexam,line width=.5pt] ([xshift=-0pt]title.north west) -- ([xshift=-0pt]frame.south west); },
+    % Handles multipage box: middle page
+    overlay middle={\draw[colexam,line width=.5pt] ([xshift=-0pt]frame.north west) -- ([xshift=-0pt]frame.south west); },
+    % Handles multipage box: last page
+    overlay last={\draw[colexam,line width=.5pt] ([xshift=-0pt]frame.north west) -- ([xshift=-0pt]frame.south west); },%
+    }
+\begin{testexamplebox}}
+{\end{testexamplebox}\endlist}
+
+%% summary
+\def\summarytext{Summary} % If English
+
+\NewDocumentEnvironment{testsummary}{ O{} }
+{
+\colorlet{colexam}{green!55!black} % Global example color
+\newtcolorbox{testsummarybox}{%
+    % Example Frame Start
+    empty,% Empty previously set parameters
+    title={\summarytext: #1},% use \thetcbcounter to access the testexample counter text
+    % Attaching a box requires an overlay
+    attach boxed title to top left,
+       % Ensures proper line breaking in longer titles
+       minipage boxed title,
+    % (boxed title style requires an overlay)
+    boxed title style={empty,size=minimal,toprule=0pt,top=4pt,left=3mm,overlay={}},
+    coltitle=colexam,fonttitle=\bfseries,
+    before=\par\medskip\noindent,parbox=false,boxsep=0pt,left=3mm,right=0mm,top=2pt,breakable,pad at break=0mm,
+       before upper=\csname @totalleftmargin\endcsname0pt, % Use instead of parbox=true. This ensures parskip is inherited by box.
+    % Handles box when it exists on one page only
+    overlay unbroken={\draw[colexam,line width=.5pt] ([xshift=-0pt]title.north west) -- ([xshift=-0pt]frame.south west); },
+    % Handles multipage box: first page
+    overlay first={\draw[colexam,line width=.5pt] ([xshift=-0pt]title.north west) -- ([xshift=-0pt]frame.south west); },
+    % Handles multipage box: middle page
+    overlay middle={\draw[colexam,line width=.5pt] ([xshift=-0pt]frame.north west) -- ([xshift=-0pt]frame.south west); },
+    % Handles multipage box: last page
+    overlay last={\draw[colexam,line width=.5pt] ([xshift=-0pt]frame.north west) -- ([xshift=-0pt]frame.south west); },%
+    }
+\begin{testsummarybox}}
+{\end{testsummarybox}\endlist}
+
+% \newcommand{\sen}{{\rm sen}}
+% \newcommand{\Co}{\mathbb{C}}
+
+\makeatletter         
+    \def\@maketitle{
+    \raggedright
+    \begin{center}
+        {\Huge \bfseries \sffamily \@title }\\[4ex] 
+        {\Large  \@author}\\[4ex] 
+        \@date\\[8ex]
+    \end{center}}
+    \makeatother
+
+\renewcommand{\sfdefault}{phv}
+\renewcommand{\familydefault}{\sfdefault}
+
+\newcommand{\ein}{\ensuremath{\in}}
+\newcommand{\noin}{\ensuremath{\notin}}
+
+\newcommand{\nset}{\ensuremath{\mathbb{N}\,}}
+\newcommand{\zset}{\ensuremath{\mathbb{Z}\,}}
+\newcommand{\rset}{\ensuremath{\mathbb{R}\,}}
+\newcommand{\qset}{\ensuremath{\mathbb{Q}\,}}
+\newcommand{\cset}{\ensuremath{\mathbb{C}\,}}
+\newcommand{\serie}[1]{\ensuremath{\mathit{#1}}}
+\newcommand{\tb}[1]{\textbf{#1}}
+\newcommand{\ti}[1]{\textit{#1}}
+
+\newcommand{\cnum}[3]{\ensuremath{#1\,#2\,#3i}}
+\newcommand{\cnuma}[2]{\ensuremath{#1\,+\,#2i}}
+\newcommand{\cnums}[2]{\ensuremath{#1\,-\,#2i}}
+\newcommand{\ccnum}[1]{\ensuremath{\overline{#1}}}
+\newcommand{\conjg}[1]{\ensuremath{#1}$^*$}
+\newcommand{\nalpha}{\ensuremath{\alpha}}
+\newcommand{\nbeta}{\ensuremath{\beta}}
+
+\newcommand{\npi}{\ensuremath{\pi\,}}
+\newcommand{\cmod}[1]{\ensuremath{||#1||}}
+\newcommand{\expn}[2]{\ensuremath{$#1^#2$}}
+
+\newcommand{\cmatDD}[2]{\ensuremath{\begin{pmatrix} #1 \\ #2\end{pmatrix}}}
+\newcommand{\sqcmatDD}[4]{\ensuremath{\begin{pmatrix} #1 & #2 \\ #3 & #4\end{pmatrix}}}
+
+\newcommand{\dsum}[3]{\displaystyle{ \sum^{#1}_{#2} #3} }
+
+\newcommand{\hlc}[2][yellow]{{%
+    \colorlet{foo}{#1}%
+    \sethlcolor{foo}\hl{#2}}%
+}
+
+%%\rowcolors{2}{gray!15}{white}
+
+\newcommand{\head}[1]{%
+\textcolor{white}{\textbf{#1}}}
+
+%%\renewcommand{\arraystretch}{1.5}
+
+%% definir vector
+\newcommand{\vt}[1]{\ensuremath{\vec{#1}}}
+
+%% column matrix
+\newcommand{\cmdr}[2]{\ensuremath{\begin{pmatrix} #1 \\ #2 \end{pmatrix}}}
+\newcommand{\cmtr}[3]{\ensuremath{\begin{pmatrix} #1 \\ #2 \\ #3 \end{pmatrix}}}
+
+%% dot product
+\newcommand{\dtprod}[2]{\ensuremath{\tb{#1} \cdot \tb{#2}}}
+
+\newcommand{\coseno}[1]{\ensuremath{cos\,#1}}
+\newcommand{\seno}[1]{\ensuremath{sin\,#1}}
+\newcommand{\tang}[1]{\ensuremath{tan\,#1}}
+
+\newcommand{\cosc}[1]{$cos^2\,#1$}
+\newcommand{\senc}[1]{$sin^2\,#1$}
+\newcommand{\tanc}[1]{$tan^2\,#1$}
+
+\newcommand{\logb}[2]{\ensuremath{log_{#1}{#2}}}
+\newcommand{\logn}[1]{\ensuremath{ln(#1)}}
+
+\newtcolorbox{mybox}[2]{colback=#2!5!white,colframe=#2!75!black,fonttitle=\bfseries,title=#1, flushright title, width=\linewidth, height=5cm}
+
+\newcommand{\price}{\ensuremath{\mathit{p} }}
+\newcommand{\quantity}{\ensuremath{\mathit{q}} } 
+
+\newcommand{\demandq}{\ensuremath{\mathit{q^D(p)}} }
+\newcommand{\supplyq}{\ensuremath{\mathit{q^S(p)}} } 
+
+\newcommand{\demandp}{\ensuremath{\mathit{p^D(q)}} }
+\newcommand{\supplyp}{\ensuremath{\mathit{p^S(q)}} } 
+
+\newcommand{\pprice}[1]{\ensuremath{\mathit{p}^{#1}}}
+\newcommand{\pquantity}[1]{\ensuremath{\mathit{q}^{#1}} } 
+
+\newcommand{\pdemandq}[1]{\ensuremath{\mathit{q^D(p^{#1})}} }
+\newcommand{\psupplyq}[1]{\ensuremath{\mathit{q^S(p^{#1})}} } 
+
+\newcommand{\pdemandp}[1]{\ensuremath{\mathit{p^D(q^{#1})}} }
+\newcommand{\psupplyp}[1]{\ensuremath{\mathit{p^S(q^{#1})}} } 
+
+\newcommand{\paxis}{\ensuremath{\mathit{p-axis}}} 
+\newcommand{\qaxis}{\ensuremath{\mathit{q-axis}}} 
+
+\newcommand{\lstar}[1]{\ensuremath{\mathit{{#1}^\ast}}}
+
+\newcommand{\conj}[1]{\ensuremath{\mathcal{#1}}}
+\newcommand{\estaen}[2]{\ensuremath{#1 \in \mathcal{#2}}}
+\newcommand{\emptys}{\ensuremath{\emptyset}}
+
+\newcommand{\bluebf}[1]{\textcolor{blue}{\textbf{#1}}}
+\newcommand{\redbf}[1]{\textcolor{red}{\textbf{#1}}}
+
+\renewcommand*{\thesection}{\arabic{section}}
+
+\definecolor{myBlue}{HTML}{0088FF}
+
+\titleformat{\section}[hang]{\Large\bfseries\sffamily}%
+{\rlap{\color{myBlue}\rule[-6pt]{\textwidth}{1.2pt}}\colorbox{myBlue}{%
+           \raisebox{0pt}[13pt][3pt]{ \makebox[60pt]{% height, width
+                \fontfamily{phv}\selectfont\color{white}{\thesection}}
+            }}}%
+{15pt}%
+{ \color{myBlue}#1
+%
+}
+\titlespacing*{\section}{0pt}{3mm}{5mm}
+
+\newcommand{\R}{%
+\textcolor{blue}{\textit{R} }}
+\newcommand{\python}{%
+\textcolor{blue}{\textit{Python}}}
+\newcommand{\pandas}{%
+\textcolor{blue}{\textit{pandas}}}
+
+\newcommand{\cunion}[2]{\ensuremath{#1 \cup #2}}
+\newcommand{\cinter}[2]{\ensuremath{#1 \cap #2}}
+
+\newcommand{\ccon}[1]{\ensuremath{\mathit{#1} }}
+
+\newcommand{\func}[1]{\ensuremath{\mathit{f(#1)} }}
+\newcommand{\funcc}[2]{\ensuremath{\mathit{#1(#2)} }}
+\newcommand{\fder}[2]{\ensuremath{\mathit{{#1}'(#2)} }}
+\newcommand{\fsder}[2]{\ensuremath{\mathit{{#1}"(#2)} }}
+\newcommand{\fderd}[1]{\ensuremath{\frac{d\mathit{f}}{d\mathit{#1}}}}
+\newcommand{\fnderd}[2]{\ensuremath{\frac{d\mathit{#1}}{d\mathit{#2}}}}
+\newcommand{\fsderd}[1]{\ensuremath{\frac{d^2\mathit{f}}{d\mathit{#1}^2}}}
+\newcommand{\eder}[1]{\ensuremath{\frac{d}{d\mathit{#1}}e^{#1}}}
+
+\newcommand{\nexp}[2]{\ensuremath{#1^{#2}}}
+
+\newcommand{\tend}[2]{\ensuremath{{#1}\,\rightarrow\,{#2}}}
+\newcommand{\tfun}[1]{\ensuremath{\mathit{#1}}}
+
+\newcommand{\parder}[2]{ \ensuremath{ \frac{\partial{#1}}{\partial{#2}} }}
+
+
+\newcommand{\parderc}[2]{ \ensuremath{ \frac{\partial^2{#1}}{\partial{#2}} }}
+
+\newcommand{\euros}[1]{ \ensuremath{#1 \text{€}} }
+
+\makeatletter
+%% The "\@seccntformat" command is an auxiliary command
+%% (see pp. 26f. of 'The LaTeX Companion,' 2nd. ed.)
+\def\@seccntformat#1{\@ifundefined{#1@cntformat}%
+   {\csname the#1\endcsname\quad}  % default
+   {\csname #1@cntformat\endcsname}% enable individual control
+}
+\let\oldappendix\appendix %% save current definition of \appendix
+\renewcommand\appendix{%
+    \oldappendix
+    \newcommand{\section@cntformat}{\appendixname~\thesection\quad}
+}
+\makeatother
+
+\definecolor{Mauve}{cmyk}{0,0.5,1,0}
+
+\lstset{ %
+  language=R,                     % the language of the code
+  basicstyle=\tiny\ttfamily,     % the size of the fonts that are used for the code
+  numbers=left,                   % where to put the line-numbers
+  numberstyle=\tiny\color{gray},  % the style that is used for the line-numbers
+  stepnumber=1,                   % the step between two line-numbers. If it's 1, each line
+                                  % will be numbered
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  showtabs=false,                 % show tabs within strings adding particular underscores
+  frame=single,                   % adds a frame around the code
+  rulecolor=\color{gray},        % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. commens (green here))
+  tabsize=2,                      % sets default tabsize to 2 spaces
+  captionpos=b,                   % sets the caption-position to bottom
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+  title=\lstname,                 % show the filename of files included with \lstinputlisting;
+                                  % also try caption instead of title
+  keywordstyle=\color{blue},      % keyword style
+  commentstyle=\color{DarkGreen}, % comment style
+  stringstyle=\color{Mauve},      % string literal style
+  escapeinside={\%*}{*)},         % if you want to add a comment within your code
+  morekeywords={*,...}            % if you want to add more keywords to the set
+} 

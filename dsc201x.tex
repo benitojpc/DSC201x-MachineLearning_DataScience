@@ -1,0 +1,75 @@
+\documentclass[11pt,a4paper]{report}
+\usepackage{bookmark}
+\usepackage[spanish,es-tabla, english]{babel}
+%%\usepackage[english]{babel}
+%%\usepackage[total=18cm,21cm,top=2cm,left=2.5cm]{geometry}
+\usepackage{geometry}
+    \parindent = 0 mm % sangría a 0 mm
+
+% paquetes con símbolos matemáticos
+\usepackage{amsmath,amssymb,amsfonts,latexsym}
+\usepackage[T1]{fontenc}        % fuentes de salida
+\usepackage[utf8]{inputenc}     % acentos desde teclado
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage[lflt]{floatflt}
+%%\usepackage{xcolor}
+\usepackage[dvipsnames,svgnames,table]{xcolor}
+\usepackage[explicit]{titlesec}
+\usepackage{tabularx}
+\usepackage{soul}
+
+\usepackage{beramono}
+\usepackage{listings}
+\usepackage{listingsutf8}
+%%\usepackage{styles/listings_rust}
+%%\usepackage{breakable}
+%%\usepackage{parskip} 
+%%\usepackage{indentfirst}
+
+\usepackage[shortlabels]{enumitem}
+\usepackage{varwidth}
+\usepackage[most]{tcolorbox}
+%%\usepackage{fontspec}
+\newcounter{testexample}
+\usepackage{xparse}
+\usepackage{subfigure}
+\usepackage{pdfpages}
+\usepackage{hyperref}
+\usepackage{chemarrow}
+\usepackage{tikz}
+\usepackage{setspace}
+
+\usepackage{tocbibind}
+\usepackage[toc,page]{appendix}
+\usepackage{enumitem}
+\usepackage{eurosym}
+
+\author{Benito J. Palacios Cerro}
+\title{APRENDIZAJE AUTOMÁTICO (MACHINE LEARNING) \\
+Y \\
+CIENCIA DE DATOS (DATA SCIENCE)\\
+\vspace{3cm} UPV (VALENCIA)}
+\date{Diciembre, 24th 2023}
+
+%%% \lstset{language=R, style=boxed}
+
+\setlength{\parskip}{8pt}
+
+\begin{document}
+    \input{styles/cmds.tex}
+    
+    \maketitle
+
+    \tableofcontents
+
+    \include{mod01}
+    
+    %%\include{integration}
+
+    %%\include{geometry}
+
+    %%\appendix    
+    %%\appendixpage
+
+\end{document}
