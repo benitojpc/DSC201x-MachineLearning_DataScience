@@ -206,4 +206,100 @@ Si tenemos esta matriz de confusión, en la que tenemos los valores reales, son 
         \includegraphics[scale=.67]{images/mod02-12_2.png}    
     \end{tabular}
 \end{center}
-En el ejemplo de comprar-no comprar
+donde:
+\begin{itemize}
+    \item \tb{TP} serían los positivos verdaderos.
+    \item \tb{FP} serían los positivos falsos, los errores.
+    \item \tb{FN} serían los negativos falsos.
+    \item \tb{TN} serían los negativos verdaderos, aciertos.
+\end{itemize}
+En el ejemplo de comprar-no comprar, la diagonal de aciertos se corresponde con los valores 4-3 o \ti{true positive, TP}, mientras que la diagonal 1-2 son los fallos o \ti{true negative, TN}. En cuanto a los porcentajes de aciertos o error se calcula mediante las dos fórmulas siguientes:
+\begin{description}
+    \item[Accuracy] : $\frac{TP + TN}{N}\implies \frac{4+3}{10} = 0.7$ o \nperc{70} de aciertos.
+    \item[Error]: $\frac{FP+FN}{N} = 1 - \text{Accuracy }\implies\frac{2+1}{10} = 0.3$ o \nperc{30} de error.
+\end{description}
+
+Por lo tanto, las dos medidas más clásicas en evaluación de clasificación se derivan fácilmente de la \tb{diagonal de la matriz de confusión}.
+
+Veamos otras medidas más complejas:
+\begin{description}
+    \item[Sensibilidad o TPRate] se representa como $\frac{TP}{TP+FN}$,
+    \item[Especificidad o TNRate], se representa como  $\frac{TN}{FP+TN}$,
+    \item[Precission o PPV (valor positivo predecible)] , se representa como  $\frac{TP}{TP+FP}$
+\end{description}
+
+Estas dos medidas son simétricas, son dos puntos de la diagonal de aciertos divididos por la suma de cada una de las respectivas columnas.
+
+Lo que suele confundir es que \tb{sensibilidad}, que en inglés se conoce como \tb{recall}, es el \ti{TP} dividido por la primera columna , mientras que la \ti{precisión}, es \ti{TP} pero dividido la primera fila. Tanto \ti{recall} como presicisón tienen \ti{TP} en el numerador, pero una denominador difiere en uno de los sumandos. En algunos libros o ejemplos, la posición de \ti{actual} y \ti{predicción} estan cambiadas a como aparecen en la imagen, deberemos tener cuidado para determina correctamente los valores que deberemos utilizar en las fórmulas para realizar los cálculos correctos. Muchas de las herramienta que podemos utilizar calculan tanto \ti{recall} como \ti{precission}, pero es importante saber como  cada celda de la matriz de confusión afectan a estas medidas.
+
+Por último, hay una medida, la que denominamos \ti{F-measure} que es la \tb{media armónica de esas dos medidas, TPRate y PPV}:
+
+\[
+\begin{array}{l}
+    TP = a \\
+    FN = b \\
+    FP = c \\
+    \\
+    \text{TPRate} = \frac{a}{a + b}\\
+    \text{PPV} = \frac{a}{a + c} \\
+\end{array}    
+\]
+\begin{equation*}
+    \begin{split}
+        \text{TPRate}\ast\text{PPV} &= \frac{a}{a + b}\ast \frac{a}{a + c} \\
+        &= \frac{a^2}{a^2 + ab + ac + bc} \\
+        &= \frac{a^2}{a(a+b+c)+bc} \\
+        \\
+        \\
+        \text{TPRate} + \text{PPV} &= \frac{a}{a + b} + \frac{a}{a + c} \\
+        &= \frac{a(a+c) + a(a+b)}{(a+b)(a+c)} = \frac{a(a + c + a +b)}{a(a+b+c)+bc} \\
+        &= \frac{a(2a + c + b)}{a(a+b+c)+bc} 
+        \\
+        \\
+        \text{F-mesaure} &= 2\ast\frac{PPV\ast TPRate}{PPV + TPRate} \\
+        &= 2 \ast \frac{a^2 / (a(a+b+c)+bc)}{a(2a+b
+        c)(a(a+b+c)+bc)} \\
+        &= 2\frac{a}{2a + b +c } = 2\frac{TP}{2TP + FP + FN}
+    \end{split}
+\end{equation*}
+
+Estas medidas se aplican a \ti{clasificadores de dos clases}, es por lo que en la tabla vemos los signos \ti{+} y \ti{-} (positivos y negativos); ¿qué hacemos cuando tenemos más de dos clases?. Por ejemplo un problema como el siguiente:
+\begin{center}
+    \includegraphics[scale=.75]{images/mod02-13.png}
+\end{center}
+La \tb{matriz de confusión o contingencia} funciona del mismo modo que para dos clases, en este caso, para la clase real tenemos tres valores: bajo, medio y alto, y los mismos para la clase predicha. La \tb{diagonal descendente (porcentaje de aciertos, 20-15-60)}, el porcentaje de aciertos sería:
+\[
+\text{Porcentaje de aciertos} = \frac{20+15+60}{20+13+5+15+4+4+7+60} = \frac{95}{133} =   0.714286 \approx \nperc{71.4286}
+\]
+El error serían todos los valores que no están en esa diagonal, con lo que es fácil generalizar estas medidas, ya sean tres, cuatro, cinco o más. Simplemente la \ti{matriz de confusión será más grande}, pero la \tb{diagonal descendente} representará siempre los \tb{aciertos}. Lo que sí será más complejo es derivar medidas como la \ti{precission} co \ti{recall}, ahora no podríamos hablar de positivos o negativos, en estos casos, lo que se suele hacer, \ti{se elige una de las clases como la \tb{positiva}}. En nuestro ejemplo podría ser \ti{low}, agrupando como \tb{clase negativa} a \ti{medium y high}, con lo que estos valores se sumarían, transformándose en una matriz de \ti{2x2}, \ti{medium y high} pasarían a ser \ti{medium-high}. Lo hemos planteado para \ti{low}, pero podríamos haber tomado \ti{medium} o \ti{high} como clase \ti{positiva}. Si hacemos las tres combinaciones posibles y promediamos esos valores, obtendríamos una media en la que podríamos calcular cualquiera de estas métricas; se podrían hacer:
+\begin{itemize}
+    \item 1 contra todos, promedio de \ti{N} medidas parciales.
+    \item 1 contra 1 (promedio  $N\ast(N-1)/2$ medidas parciales): low contra medium, low contra high y medium contra high. Tenemos estas tres combinaciones, pero si tuvieramos más clásis, aquí el numero de combinaciones sería mayor, se dispararía.
+\end{itemize}
+Son sólo \tb{medidas promedio}, podemos ver que en nuestro ejemplo, la clase \ti{high} tiene muchos más ejemplos que la clase \ti{medium}, por lo que podemos recurrir a opciones de promediar o ponerle pesos a distintas de esas medidas para calcular el valor medio.
+
+Viendo la \ti{matriz de confusión} podemos analizar como mejorar nuestro modelo.
+\begin{center}
+    \includegraphics[scale=.75]{images/mod02-14.png}
+\end{center}
+
+\subsection{Datos no balanceados}
+
+Uno de los problemas que se tienen en los problemas de clasificación es que no tenemos el mismo número de ejemplos en las dos clases. En la mayoría de los casos son situaciones \tb{no balanceadas}, tenemos muchos más de un ejemplo que de otro.
+
+Podemos encontrar diferencias significativas en la proporción de datos entre clases. Por ejemplo, si tenemos un \nperc{99} de ejemplos de una clase y un \nperc{1} para la otra clase, en este caso la predicción será siempre de la clase mayoritaria, tendría un \nperc{99} de aciertos en la \ti{matriz de confusión}. 
+
+Pero nos encontramos que con frecuencia \tb{la clase minoritaria} suelen ser las más importantes, que más nos interesa determinar cuando fallan, pueden ser la causa de problemas bastante serios y necesitaríamos disponer de un predictor para estos casos.
+
+Estas situaciones desbalanceadas nos obligan a establecer un error muy bajo, ya que ignoran a esta clase minoritaria, priorizando a la mayoritaria. En estos casos podemos quere fijarnos en una única medida, la \tb{macroprecisión}\footnote{macroprecisión $\rightarrow$ \funcc{macroacc}{h}}, la medida clase por clase, nos mostraría que hay algo problemático en nuestra clasificación. Si tenemos que siempre acertamos con la clas mayoritaria, pero siempre fallamos con la minoritaria, al hacer el promedio por clases tendríamos un \nperc{50} de acierto de una clase perfecta y una clase desastrosa, lo que nos indicaría que nuestro clasificador no sirve para nuestro objetivo. 
+
+Es un ejemplo en el que vemos que simplemente mirar medidas agregadas, muchas veces nos puede confundir y es mucho más útil, en general, mirar la matriz de confusión o la matriz de contingencia.
+\begin{center}
+    \includegraphics[scale=.75]{images/mod02-15.png}
+\end{center}
+
+\begin{center}
+    \includegraphics[scale=.75]{images/mod02-16.png}
+\end{center}
+
+
