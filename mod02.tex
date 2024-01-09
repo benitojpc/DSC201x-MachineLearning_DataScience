@@ -302,4 +302,94 @@ Es un ejemplo en el que vemos que simplemente mirar medidas agregadas, muchas ve
     \includegraphics[scale=.75]{images/mod02-16.png}
 \end{center}
 
+\subsection{Clasificadores duros y suaves}
+
+Una forma avanzada de analizar los clasificadores es ver lo que predicen, podemos tener clasificadores que nos indiquen:
+\begin{itemize}
+    \item si tenemos varias clases, nos predigan a qué clase pertenece nuestro ejemplo.
+    \item la probabilidad de que un ejemplo pertenezca a una de esas clases, o poner en orden la probabilidad de a qué clases es más probable que el ejemplo se ajuste, es lo que se conoce como \tb{clasificador suave}. 
+\end{itemize}
+
+Por lo tanto, un \tb{clasificador suave o \ti{«scoring»}} predice una clase, pero acompaña cada predicción con una \ti{estimación de la fiabilidad} de cada predicción. Por ejemplo, tenemos tres clases, un clasificador suave nos puede dar como resultados:
+\begin{itemize}
+    \item 7 para la primera clase.
+    \item 2 para la segunda,
+    \item 0.3 para la tercera
+\end{itemize}
+esto quiere decir que el valor más alto corresponde a la primera de las class, el algoritmo de clasificación estará más seguro de que pueda ser de la primera clase.
+
+Los clasificadores suaves no proporcionan más posibilidades de funcionar y mejorar nuestras predicciones que los \tb{clasificadores duros o \ti{«crisp»}}.
+
+\subsubsection*{Probabilidades y decisiones}
+
+Una \tb{probabilidad} se puede convertir en \tb{decisiones} mediante el uso de un \tb{umbral}. Por ejemplo, un médico puede dar un medicamento a un paciente sólo si la probabilidad de que sea efectivo sea mayor de el \nperc{80}, mientras que otro médico puede establecer el umbral en el \nperc{60}.
+
+Si un modelo asignara el \nperc{70} de probabilidad, con el primer umbral no se le daría el medicamento, pero con el segundo sí. Vemos que con el mismo modelo suave, variando el umbral, podemos tener diferentes decisiones.
+
+No es necesario que el \tb{valor suave} sea realmente una probabilidad en el rango de \ti{0 y 1 (\nperc{0} y \nperc{100})}, ocurre lo mismo con cualquier otro valor numérico, como puede ser la \tb{confianza}.
+
+\begin{center}
+    \includegraphics[scale=.75]{images/mod02-17.png}
+\end{center}
+
+\subsection{Clasificadores probabilísticos}
+
+Como vimos, los \ti{clasificadores suaves} no nos dan directamente la clase que queremos estimar, sino un valor de qué clase tiene una fiabilidad mayor de ser correcta.
+
+Un tipo de \ti{clasificador suave} es el denominado \tb{estimador probabilístico de clase}, un sistema al que se asignan unas entradas sobre el ejemplo, pero en lugar de predecir la clase nos da la \tb{probabilidad para cada una de las clases u opciones}. Si tenemos tres clases (\ti{a,b} y \ti{c}), obtendremos la probabilidad para cada una de ellas: \mat{p_a},  \mat{p_b} y \mat{p_c}.
+
+Digamos que tenemos dos clasificadores, \mat{clasificador_1} y \mat{clasificador_2} a los que asignamos los mismo valores de entrada, obtenemos los siguientes resultados:
+\begin{itemize}
+    \item \mat{clasificador_1}: \mat{p_a = 0.2}, \mat{p_b = 0.5} y \mat{p_c = 0.3}.
+    \item \mat{clasificador_2}: \mat{p_a = 0.3}, \mat{p_b = 0.4} y \mat{p_c = 0.3}.
+\end{itemize}
+ambos predicen mejores resultados para el \ti{clase ,b}; si nuestro umbral a la hora de determinar que predecimos, simplemente es elegir la clase con la mayor probabilidad, ésta corresponde al  \mat{clasificador_1} obtiene mejor resultado; si tuvieramos que determinar que clasificador está más seguro de la predicción, en principio, tmabién sería el \mat{clasificador_1}, es más confiable pues se corresponde con el \nperc{50}, mientras que el segundo nos da el \nperc{40}. El segundo clasificador habría sido más \tb{conservador}, y si al final la clase correcta no fuera la \ti{b}, el segundo clasificador habría cometido un \ti{error menor} que el primero.
+
+¿Cómo podemos evaluar lo buenas que son las estimaciones de nuestro ejemplo?. Necesitamos medidas que nos evalúen lo buenas o acertadas que son esas probabilidades.
+
+Los \ti{clasificadores probabilísticos} predicen una probabilidad, tenemos un ejemplo y denominamos la \ti{probabilidad para el ejemplo i sobre la clase j}, obtendremos una definición que sirve para problemas de dos, tres o cuatro clases, que determinará o estimará la probabilidad para el ejemplo \ti{i} y la clase \ti{j}, y vamos a ver el valor real para el ejemplo \ti{i} y la clase \ti{j}. Si la clase del ejemplo \ti{i} es la \ti{clase j} su valor será 1, y si no será 0, en cambio, las probabilidades pueden ir entre 0 y 1.
+\begin{equation*}
+    \mat{MSE} = \frac{1}{n}\displaystyle{\sum_{i\in S}\sum_{j\in C}[\func{i,j} - \funcc{p}{i,j}]^2}
+\end{equation*}
+Aplicando la fórmula del \ti{error cuadrático medio (\mat{MSE})}, tendremos que en la parte izquierda, valores reales ($\func{i,j}$) sólo habrá valores 0 o 1, mientra que en la parte de predicción ($\funcc{p}{i,j}$) tendrá valores que pueden ir en el rango de 0 a 1. Si $\func{i,j} = 1$, es decir, la \ti{clase es la \tb{j}} y la probabilidad estimada $\funcc{p}{i,j} = 1$ para esa clase, es perfecto, estaríamos diciendo que para las otras clases la probabilidad estimada sería 0. Igual ocurre si los dos valores anteriores son 0, establece que la probabilidad de que sea la clase j es nula.
+
+Por lo tanto, si no es esa clase, sea 0, y obtengamos un valor que no sea 0, será un error y todo lo que nos alejemos de 1 y nos deviemos desde el 1, que sería predecir que sí va a ser esa clase, también estamos desviandonos de la posibilidad perfecta. Es lo que hace la diferencia entre \mat{f} y \mat{p}, con el error cuadrático medio nos aseguramos de quitar un posible signo negativo, al estar elevada al cuadrado, por lo tanto el resultado siempre será positivo.
+
+En el claso de los clasificadores probabilísticos el \tb{error cuadrático medio} también se denomina \tb{Brier Score}, anunque la definición es la misma, se denomina así porque este valor sólo puede ser \tb{1} o \tb{0}. Ésta es la medida más habitual para evaluar lo bueno que es un \ti{clasificador probabilístico}.
+
+Otra medida bastante habitual, relacionda con la \ti{entropía} es lo que denominamos \tb{Log Loss}, simplemente es operar con los mismos valores , donde el valor real que se multiplica por el \tb{logaritmo} de la probabilidad, si los valores son similares darán valores bajos y si son diferentes, valores altos. Cuando más altos sean los valores, peor será el clasificador.
+
+\begin{equation*}
+    \mat{Logloss} = -\frac{1}{n}\displaystyle{\sum_{i\in S}\sum_{j\in C}(\func{i,j}\ast log_{2}\,\funcc{p}{i,j})}
+\end{equation*}
+
+Tanto \ti{Brier Score} y el \ti{Log loss} incluyen una medida que es un estimador de probabilidades. En ocasiones no sabemos si un estimador es bueno porque la clasificación  que hacemos con él es buena, o porque realmente las probabilidades están bien estimadas. Podemos tener un clasificador que siempre nos de $0.5$ de probabilidad para todas las clases, suponiendo que es un problema binario, en principio, si tenemos sólo dos clases, si tenemos un \nperc{50} de ejemplos para dos clases, podríamos ver si la estimación se decanta por una clase o mucho por la otra; podría estar bien calibrado o balanceado, pero el sistema no servía para nada ya que siempre estima un \nperc{50} para cada clase, no discrimina entre ejemplos.
+
+Para determinar si en un modelo las probabilidades están bien calibradas y si el modelo realmente refina bien entre las dos clases utiliza las descomposición, para el \ti{Brier Score}, entre \ti{medidas de calibración} y \ti{medidas de refinamiento}. Cuando analizamos la información entre \ti{calibración} y \ti{refinamiento} podemos observar que a veces, sin modificar el modelo, podremos mejorar la \ti{estimación de probabilidad}; podemos tener medias que estén muy cerca de $0.5$ o muy extremas, lo que hacemos es un \ti{postproceso} al clasificador, calibrándolo mejor y mejorando la estimación de probabilidades.
+
+\begin{center}
+    \includegraphics[scale=.75]{images/mod02-18.png}
+\end{center}
+
+\subsection{Rankers}
+
+Es otro tipo de \ti{clasificador suave}, nos proporciona un valor y se suele aplicar a problemas de clasificación de dos clases, en éstos tenemos que el clasificador estimará un valor, un \ti{scort} para cada uno de los ejemplos. Cuanto más alto sea el valor de \ti{scort}, mayor será la probabilidad de en ese ejemplo sea positiva, y cuanto más bajo que sea de la clase negativa.
+
+Si cogemos todos los ejemplos de un \ti{dataset} lo que tenemos es un \tb{ranking}, donde los que están más arriba son los más probables de ser positivos, y los que están abajo, más probable que sean negativos.
+
+El valor predicho por el \ti{ranker} not tiene por qué ser una probabilidad, simplemente es un valor más alto cuanto más probable es y viceversa. Lo que nos interesa es evaluar lo bueno que es ese ranking. Si tengo veinte unidades de un producto que quiero vender a mil clientes, como sólo tengo veinte unidades lo que me interesa saber, de los mil clientes, quienes tienen mayor probabilidad de compra de esps productos, con lo que puede que realmente necesite hacer una campaña sólo, por ejemplo, para un \nperc{10} de los clientes que tengan mayor probabilidad de compra, muchos no comprarán aunque tenga una mayor probabilidad, ya que la compra dependerá de otros muchos factores. Por lo tanto, lo que nos interesa saber es el \ti{ranking} y no tanto la \ti{probabilidad}, esto está relacionado con las medidas de discriminación entre dos clases y lo que es el refinamiento, cuando se habla de estimación de probabilidad; esta parte del refinamiento es lo que realmente evaluamos al hablar de \tb{ranker}.
+
+En resumen, un \tb{ranker} es un \ti{clasificador suave} que da un \ti{valor monótamente relacionado con la probabilidad de clase uno}. Cuanto más alto sea mayor probabilidad de que sea la clase uno, clase positiva, y cuanto más bajo mayor probabilidad de que sea la clase cero, o negativa.
+
+El \ti{ranker} es muy utilizado en \ti{marketing} a la hora de recomendar productos, lo que se hace es escoger un segmento de aquellos items que están más altos en el ranking, un percentil (\nperc{5} o el \nperc{10}) y sobre ellos se hace la campaña, de ellos puede que contesten un subconjunto, pero hemos limitado la campaña a aquellos con mayor probabilidad. Lo que nos interesa es ordenar todos los clientes y escoger los que nos interesan. Cuanto mayor sea el ranking, jmejor será la segmentación.
+
+¿Cómo evaluamos lo bueno que es un ranker? Lo que más se utiliza es el \tb{área bajo la curva ROC (Receiver Operating Characteristic)}, normalmente se utilizan las siglas inglesas,\mat{AUC} (\ti{Area Under the ROC Curve}). Normalmente esta medida es equivalente a una estadística conocida como \ti{estadística de Willcoxon-Mann Whitney}, que se define como: \ti{dado un ejemplo psitivo y un ejemplo negativo, la probabilidad de que el modelo coloque en el ranking de estimación al ejemplo positivo por encima del ejemplo negativo}. Por ejemplo, tenemos un conjunto de ejemplos de entrenamiento, con sus valores de clase positivos y negativos, cogemos al azar un ejemplo positivo, igual hacemos con los ejemplos negativos, comprobamos si nuestro \tb{ranker} pone el positivo arriba del negativo; la probabilidad de que eso pase es el AUC. La forma de definirlo es simplemente realizar un conteo de cuántas veces, eligiendo al azar entre positivos y negativos, se confirma dicha ordenación. Esta métrica nos dice lo bueno que es nuestro ranking, un valor de 1 será perfecto, mientras que 0 será un desastre, lo normal es que el ranking esté en torno al \ti{0.5}.
+
+Existe otras distancias para evaluar el ranking, por ejemplo, la distancia entre el \ti{ranking perfecto} y el \ti{ranking estimado}; esa discrepancia entre rankings, por ejemplo la denominada \tb{discrepancia de Kendall}, suele ser equivalente al área bajo la curva ROC, por lo que muchas veces sólo se utiliza ésta para evaluar rankers.
+
+\begin{center}
+    \includegraphics[scale=.55]{images/mod02-19.png}
+\end{center}
+
+\subsection{Evaluación sensible al coste}
 
